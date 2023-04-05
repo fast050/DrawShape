@@ -20,8 +20,8 @@ class TicketBackGroundShape(context: Context,attrs:AttributeSet?) :View(context,
 
         canvas?.let {
 
-            val originX = 100f
-            val originY = 100f
+            val originX = 0f
+            val originY = 0f
             val width = width.toFloat() //335f
             val height =  height.toFloat() //166f
             val radios =  12f.Scale()
