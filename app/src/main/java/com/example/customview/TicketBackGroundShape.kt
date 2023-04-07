@@ -6,13 +6,14 @@ import android.util.AttributeSet
 import android.view.View
 
 
-class TicketBackGroundShape(context: Context,attrs:AttributeSet?) :View(context,attrs) {
+class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(context, attrs) {
     private val paint = Paint()
     private var cornerRadius = 50f
     private var innerRadius = 100f
+    private var scaleFactor = 0f
 
     init {
-        paint.color = Color.RED
+        paint.color = Color.GRAY
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -20,50 +21,69 @@ class TicketBackGroundShape(context: Context,attrs:AttributeSet?) :View(context,
 
         canvas?.let {
 
-            val originX = 0f
-            val originY = 0f
-            val width = width.toFloat() //335f
-            val height =  height.toFloat() //166f
-            val radios =  12f.Scale()
+            val originX = 0f.Scale()+scaleFactor.Scale()
+            val originY = 0f.Scale()+scaleFactor.Scale()
+            val width = width.toFloat()-scaleFactor.div(2).Scale() //335f
+            val height = height.toFloat()-scaleFactor.div(2).Scale() //166f
+            val radios = 12f.Scale()
             val dashLinePointShiftFromOriginX = 103f.Scale()
             val dashLinePositionFromBottomShape = 63f.Scale()
 
             //float left, float top, float right, float bottom
-            val rectFRight = RectF((originX+width) - radios , dashLinePointShiftFromOriginX-radios , (originX+width) + radios , dashLinePointShiftFromOriginX+radios)
-            val rectFLeft  = RectF((originX),-(dashLinePositionFromBottomShape+radios) ,originX+radios,-(dashLinePositionFromBottomShape-radios))
+            val rectFRight =
+                RectF(
+                     width - radios,
+                    dashLinePointShiftFromOriginX - radios,
+                     width + radios,
+                    dashLinePointShiftFromOriginX + radios
+                )
+            val rectFLeft =
+                RectF(
+                    originX - radios,
+                    dashLinePointShiftFromOriginX-radios,
+                    originX + radios,
+                    dashLinePointShiftFromOriginX+radios
+                )
             val path = Path().apply {
                 moveTo(originX, originY)
-                lineTo(originX+width, originY)
+                lineTo(width, originY)
 
                 // arch
-                lineTo(originX+width, dashLinePointShiftFromOriginX-radios)
-                arcTo(rectFRight , 270f , -180f , false)
-                lineTo(width,dashLinePointShiftFromOriginX+radios)
+                lineTo(width, dashLinePointShiftFromOriginX - radios)
+                arcTo(rectFRight, 270f, -180f, false)
+                //lineTo(width, dashLinePointShiftFromOriginX + radios)
 
-                lineTo(width , height)
-                lineTo(originX , height)
+                lineTo(width, height)
+                lineTo(originX, height)
 
                 //arch
-                lineTo(originX, -(radios))
-                arcTo(rectFLeft , 270f , 180f , false)
-                lineTo(originX,-(dashLinePositionFromBottomShape+radios))
-
-                //lineTo(-width ,-height)
-               // lineTo(originX+width , originY+height)
+                lineTo(originX, dashLinePositionFromBottomShape+radios)
+                arcTo(rectFLeft, 90f, -180f, false)
+                close()
 
             }
 
-            canvas.drawPath(path , paint)
+            canvas.drawPath(path, paint)
 
+            val paints = Paint().apply {
+                color = Color.BLACK
+                strokeWidth = 10f
+                style = Paint.Style.STROKE
+                pathEffect = DashPathEffect(floatArrayOf(10f, 20f) , 0f)
+            }
+
+            canvas.drawLine(originX +radios , dashLinePointShiftFromOriginX , width -radios , dashLinePointShiftFromOriginX , paints )
 
         }
 
 
     }
-    fun Float.Scale():Float{
+
+    fun Float.Scale(): Float {
         val heightByDesign = 166f
-        return height*this/heightByDesign
+        return height * this / heightByDesign
     }
+
     private fun drawArchWithRectangle(canvas: Canvas) {
         val path = Path().apply {
             // Draws triangle
