@@ -4,12 +4,13 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import androidx.cardview.widget.CardView
 
 
 class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(context, attrs) {
     private val paint = Paint()
     private var cornerRadius = 50f
-    private var innerRadius = 100f
+    private var innerRadius = 6f
     private var scaleFactor = 0f
 
     init {
@@ -21,58 +22,63 @@ class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(conte
 
         canvas?.let {
 
-            val originX = 0f.Scale()+scaleFactor.Scale()
-            val originY = 0f.Scale()+scaleFactor.Scale()
-            val width = width.toFloat()-scaleFactor.div(2).Scale() //335f
-            val height = height.toFloat()-scaleFactor.div(2).Scale() //166f
-            val radios = 12f.Scale()
+            val originX = 0f.Scale() + scaleFactor.Scale()
+            val originY = 0f.Scale() + scaleFactor.Scale()
+            val width = width.toFloat() - scaleFactor.Scale() //335f
+            val height = height.toFloat() - scaleFactor.Scale() //166f
+            val radios = innerRadius.Scale()
             val dashLinePointShiftFromOriginX = 103f.Scale()
             val dashLinePositionFromBottomShape = 63f.Scale()
 
-            //float left, float top, float right, float bottom
-            val rectFRight =
-                RectF(
-                     width - radios,
-                    dashLinePointShiftFromOriginX - radios,
-                     width + radios,
-                    dashLinePointShiftFromOriginX + radios
-                )
-            val rectFLeft =
-                RectF(
-                    originX - radios,
-                    dashLinePointShiftFromOriginX-radios,
-                    originX + radios,
-                    dashLinePointShiftFromOriginX+radios
-                )
             val path = Path().apply {
                 moveTo(originX, originY)
                 lineTo(width, originY)
 
                 // arch
                 lineTo(width, dashLinePointShiftFromOriginX - radios)
-                arcTo(rectFRight, 270f, -180f, false)
-                //lineTo(width, dashLinePointShiftFromOriginX + radios)
+                arcTo(
+                    width - radios,
+                    dashLinePointShiftFromOriginX - radios,
+                    width + radios,
+                    dashLinePointShiftFromOriginX + radios,
+                    270f,
+                    -180f,
+                    false
+                )
 
                 lineTo(width, height)
                 lineTo(originX, height)
 
                 //arch
-                lineTo(originX, dashLinePositionFromBottomShape+radios)
-                arcTo(rectFLeft, 90f, -180f, false)
+                lineTo(originX, dashLinePositionFromBottomShape + radios)
+                arcTo(
+                    originX - radios,
+                    dashLinePointShiftFromOriginX - radios,
+                    originX + radios,
+                    dashLinePointShiftFromOriginX + radios,
+                    90f,
+                    -180f,
+                    false
+                )
                 close()
-
             }
 
             canvas.drawPath(path, paint)
 
             val paints = Paint().apply {
                 color = Color.BLACK
-                strokeWidth = 10f
+                strokeWidth = 2f.Scale()
                 style = Paint.Style.STROKE
-                pathEffect = DashPathEffect(floatArrayOf(10f, 20f) , 0f)
+                pathEffect = DashPathEffect(floatArrayOf(30f, 20f), 15f)
             }
 
-            canvas.drawLine(originX +radios , dashLinePointShiftFromOriginX , width -radios , dashLinePointShiftFromOriginX , paints )
+            canvas.drawLine(
+                originX + radios,
+                dashLinePointShiftFromOriginX,
+                width - radios,
+                dashLinePointShiftFromOriginX,
+                paints
+            )
 
         }
 
