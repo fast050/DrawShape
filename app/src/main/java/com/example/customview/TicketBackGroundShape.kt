@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
-import androidx.cardview.widget.CardView
 
 
 class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(context, attrs) {
@@ -92,33 +91,34 @@ class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(conte
         val originY = 0f.Scale() + scaleFactor.Scale()
         val width = width.toFloat() - scaleFactor.Scale() //335f
         val height = height.toFloat() - scaleFactor.Scale() //166f
-        val radios = innerRadius.Scale()
+        val radiosInternal = innerRadius.Scale()
+        val radiosCorner = cornerRadius.Scale()
         val dashLinePointShiftFromOriginX = 103f.Scale()
         val dashLinePositionFromBottomShape = 63f.Scale()
 
         val path = Path().apply {
             moveTo(originX, originY)
-            lineTo(width - (cornerRadius.Scale() * 2), originY)
+            lineTo(width - (radiosCorner * 2), originY)
 
             //arch in top right corner
             arcTo(
-                width - (cornerRadius.Scale() * 2),
+                width - (radiosCorner* 2),
                 originY,
                 width,
-                originY + (cornerRadius.Scale() * 2),
+                originY + (radiosCorner * 2),
                 270f,
                 90f,
-                false
+                true
             )
-            lineTo(width, originY + (cornerRadius.Scale() * 2))
+            lineTo(width, originY + (radiosCorner * 2))
 
             // arch internal right
-            lineTo(width, dashLinePointShiftFromOriginX - radios)
+            lineTo(width, dashLinePointShiftFromOriginX - radiosInternal)
             arcTo(
-                width - radios,
-                dashLinePointShiftFromOriginX - radios,
-                width + radios,
-                dashLinePointShiftFromOriginX + radios,
+                width - radiosInternal,
+                dashLinePointShiftFromOriginX - radiosInternal,
+                width + radiosInternal,
+                dashLinePointShiftFromOriginX + radiosInternal,
                 270f,
                 -180f,
                 false
@@ -126,48 +126,48 @@ class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(conte
 
             //arch in bottom right corner
             arcTo(
-                width - (cornerRadius.Scale() * 2),
-                height - (cornerRadius.Scale() * 2),
+                width - (radiosCorner * 2),
+                height - (radiosCorner * 2),
                 width,
                 height,
                 0f,
                 90f,
                 false
             )
-            lineTo(width - (cornerRadius.Scale() * 2), height)
-            lineTo(originX + (cornerRadius.Scale() * 2), height)
+            lineTo(width - (radiosCorner * 2), height)
+            lineTo(originX + (radiosCorner * 2), height)
 
             //arch in bottom left corner
             arcTo(
                 originX,
-                height - (cornerRadius.Scale() * 2),
-                originX + (cornerRadius.Scale() * 2),
+                height - (radiosCorner * 2),
+                originX + (radiosCorner * 2),
                 height,
                 90f,
                 90f,
                 false
             )
-            lineTo(originX, height - (cornerRadius.Scale() * 2))
+            lineTo(originX, height - (radiosCorner * 2))
 
 
             //arch internal left
-            lineTo(originX, dashLinePositionFromBottomShape + radios)
+            lineTo(originX, dashLinePositionFromBottomShape + radiosInternal)
             arcTo(
-                originX - radios,
-                dashLinePointShiftFromOriginX - radios,
-                originX + radios,
-                dashLinePointShiftFromOriginX + radios,
+                originX - radiosInternal,
+                dashLinePointShiftFromOriginX - radiosInternal,
+                originX + radiosInternal,
+                dashLinePointShiftFromOriginX + radiosInternal,
                 90f,
                 -180f,
                 false
             )
 
-            lineTo( originX , (cornerRadius.Scale()*2))
+            lineTo( originX , (radiosCorner*2))
             arcTo(
                 originX,
                 originY,
-                originX +(cornerRadius.Scale()*2),
-                originY + (cornerRadius.Scale()*2),
+                originX +(radiosCorner*2),
+                originY + (radiosCorner*2),
                 180f,
                 90f,
                 false
@@ -185,9 +185,9 @@ class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(conte
         }
 
         canvas.drawLine(
-            originX + radios,
+            originX + radiosInternal,
             dashLinePointShiftFromOriginX,
-            width - radios,
+            width - radiosInternal,
             dashLinePointShiftFromOriginX,
             paints
         )
