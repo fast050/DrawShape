@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<declare-styleable name="TicketBackGroundShape">
+    <attr name="ticketCornerShape" format="enum">
+       <enum name="square" value="0"/>
+       <enum name="round"  value="1"/>
+    </attr>
+    <attr name="ticketInternalRadius" format="dimension"/>
+    <attr name="ticketCornerRadius" format="dimension"/>
+    <attr name="ticketHeight" format="dimension"/>
+    <attr name="ticketDividerPercentage" format="integer"/>
+
+</declare-styleable>
+
+</resources>

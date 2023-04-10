@@ -41,23 +41,23 @@ class InteractiveDrawingBackground(
         //canvas?.drawCircle(currentX,currentY , 100f , paint)
         val paintLine = Paint().apply {
             color = Color.RED
-            strokeWidth = 50f
+            strokeWidth = 20f
         }
 
         Log.d("TAG", "onDraw :  $counter")
 
-        /*  if (counter==2){
+          if (counter==2){
               canvas?.drawLine(point1x , point1y , point2x , point2y ,paintLine)
               counter=0
-          }*/
+          }
 
-        canvas?.drawRect(
+        /*canvas?.drawRect(
             cx,
             cy,
             cx + 100f,
             cy + 100f,
             paint
-        )
+        )*/
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {

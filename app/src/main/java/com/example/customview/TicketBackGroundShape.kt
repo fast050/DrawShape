@@ -1,6 +1,7 @@
 package com.example.customview
 
 import android.content.Context
+import android.content.res.TypedArray
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
@@ -8,19 +9,34 @@ import android.view.View
 
 class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(context, attrs) {
     private val paint = Paint()
-    private var cornerRadius = 5f
-    private var innerRadius = 6f
+    private var cornerRadius = 10f
+    private var innerRadius = 20f
     private var scaleFactor = 0f
+    private var ticketShapeHeight = 166f
+    private var ticketDividerHeight = 103f
+    private var ticketCornerShape : Int = 0
 
     init {
         paint.color = Color.GRAY
+        val typedArray: TypedArray = context.theme.obtainStyledAttributes(
+            attrs, R.styleable.TicketBackGroundShape, 0, 0
+        )
+        try {
+            innerRadius = typedArray.getDimensionPixelSize(R.styleable.TicketBackGroundShape_ticketInternalRadius, 20).toFloat()
+            cornerRadius = typedArray.getDimensionPixelSize(R.styleable.TicketBackGroundShape_ticketCornerRadius, 10).toFloat()
+
+        } finally {
+            typedArray.recycle()
+        }
     }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
         canvas?.let {
-            drawTicketRoundCorner(canvas)
+
+          //drawTicketRoundCorner(canvas)
+            drawTicket(canvas)
         }
 
 
@@ -32,8 +48,9 @@ class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(conte
         val width = width.toFloat() - scaleFactor.Scale() //335f
         val height = height.toFloat() - scaleFactor.Scale() //166f
         val radios = innerRadius.Scale()
-        val dashLinePointShiftFromOriginX = 103f.Scale()
-        val dashLinePositionFromBottomShape = 63f.Scale()
+        val dashLinePointShiftFromOriginX = ticketDividerHeight.Scale()
+        val dashLinePositionFromBottomShape = (ticketShapeHeight - ticketDividerHeight).Scale()
+
 
         val path = Path().apply {
             moveTo(originX, originY)
@@ -93,8 +110,8 @@ class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(conte
         val height = height.toFloat() - scaleFactor.Scale() //166f
         val radiosInternal = innerRadius.Scale()
         val radiosCorner = cornerRadius.Scale()
-        val dashLinePointShiftFromOriginX = 103f.Scale()
-        val dashLinePositionFromBottomShape = 63f.Scale()
+        val dashLinePointShiftFromOriginX = ticketDividerHeight.Scale()
+        val dashLinePositionFromBottomShape = (ticketShapeHeight - ticketDividerHeight).Scale()
 
         val path = Path().apply {
             moveTo(originX, originY)
@@ -194,7 +211,7 @@ class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(conte
     }
 
     fun Float.Scale(): Float {
-        val heightByDesign = 166f
+        val heightByDesign = ticketShapeHeight
         return height * this / heightByDesign
     }
 
