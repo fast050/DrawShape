@@ -8,36 +8,30 @@
 
     <com.example.customview.TicketBackGroundShape
         android:id="@+id/ticketBackGroundShape"
-        android:layout_width="360dp"
-        android:layout_height="200dp"
-        app:ticketShapeHeight="200"
-        app:ticketDividerHeight="110"
+        android:layout_width="match_parent"
+        android:layout_margin="15dp"
+        android:layout_height="match_parent"
+        app:ticketShapeHeight="570"
+        app:ticketDividerHeight="400"
+        app:ticketInternalRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.313"
         app:ticketCornerShape="round"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.028" />
-
-    <com.example.customview.InteractiveDrawingBackground
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ticketBackGroundShape"
-        app:layout_constraintVertical_bias="0.0" />
+         />
 
     <TextView
         android:id="@+id/textView"
+        style="@style/TextAppearance.AppCompat.Headline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="Ticket"
         app:layout_constraintBottom_toBottomOf="@+id/ticketBackGroundShape"
         app:layout_constraintEnd_toEndOf="@+id/ticketBackGroundShape"
-        app:layout_constraintHorizontal_bias="0.052"
+        app:layout_constraintHorizontal_bias="0.101"
         app:layout_constraintStart_toStartOf="@+id/ticketBackGroundShape"
         app:layout_constraintTop_toTopOf="@+id/ticketBackGroundShape"
-        app:layout_constraintVertical_bias="0.08" />
+        app:layout_constraintVertical_bias="0.082" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
