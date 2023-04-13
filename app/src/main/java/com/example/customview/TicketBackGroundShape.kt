@@ -15,10 +15,10 @@ class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(conte
     private var ticketShapeHeight = 166f
     private var ticketDividerHeight = 103f
     private var ticketCornerShape: Int = 0
+    private var ticketBackgroundColor:Int = Color.GRAY
+    private var ticketDividerColor:Int = Color.BLACK
 
     init {
-        paint.color = Color.GRAY
-
         val typedArray: TypedArray = context.theme.obtainStyledAttributes(
             attrs, R.styleable.TicketBackGroundShape, 0, 0
         )
@@ -49,6 +49,11 @@ class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(conte
                     150f
                 )
 
+            ticketBackgroundColor=
+                typedArray.getColor(R.styleable.TicketBackGroundShape_ticketBackgroundColor , Color.GRAY)
+
+            ticketDividerColor=
+                typedArray.getColor(R.styleable.TicketBackGroundShape_ticketDividerColor , Color.BLACK)
         } finally {
             typedArray.recycle()
         }
@@ -57,6 +62,7 @@ class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(conte
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
+        paint.color = ticketBackgroundColor
         canvas?.let {
             when (ticketCornerShape) {
                 0 -> drawTicket(canvas)
@@ -112,7 +118,7 @@ class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(conte
         canvas.drawPath(path, paint)
 
         val paints = Paint().apply {
-            color = Color.BLACK
+            color = ticketDividerColor
             strokeWidth = 2f.Scale()
             style = Paint.Style.STROKE
             paint.flags = Paint.ANTI_ALIAS_FLAG
@@ -220,7 +226,7 @@ class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(conte
         canvas.drawPath(path, paint)
 
         val paints = Paint().apply {
-            color = Color.BLACK
+            color = ticketDividerColor
             strokeWidth = 2f.Scale()
             style = Paint.Style.STROKE
             pathEffect = DashPathEffect(floatArrayOf(30f, 20f), 15f)

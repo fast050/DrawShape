@@ -6,32 +6,54 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.example.customview.TicketBackGroundShape
-        android:id="@+id/ticketBackGroundShape"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_margin="15dp"
-        android:layout_height="match_parent"
-        app:ticketShapeHeight="570"
-        app:ticketDividerHeight="400"
-        app:ticketInternalRadius="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:ticketCornerShape="round"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-         />
+        android:fillViewport="true"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView"
-        style="@style/TextAppearance.AppCompat.Headline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ticket"
-        app:layout_constraintBottom_toBottomOf="@+id/ticketBackGroundShape"
-        app:layout_constraintEnd_toEndOf="@+id/ticketBackGroundShape"
-        app:layout_constraintHorizontal_bias="0.101"
-        app:layout_constraintStart_toStartOf="@+id/ticketBackGroundShape"
-        app:layout_constraintTop_toTopOf="@+id/ticketBackGroundShape"
-        app:layout_constraintVertical_bias="0.082" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.example.customview.TicketBackGroundShape
+                android:id="@+id/ticketBackGroundShape"
+                android:layout_width="match_parent"
+                android:layout_margin="15dp"
+                android:layout_height="match_parent"
+                app:ticketShapeHeight="570"
+                app:ticketDividerHeight="460"
+                app:ticketInternalRadius="10dp"
+                app:ticketBackgroundColor="#3F51B5"
+                app:ticketDividerColor="#03A9F4"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:ticketCornerShape="round"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/textView"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ticket"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/ticketBackGroundShape"
+                app:layout_constraintEnd_toEndOf="@+id/ticketBackGroundShape"
+                app:layout_constraintHorizontal_bias="0.101"
+                app:layout_constraintStart_toStartOf="@+id/ticketBackGroundShape"
+                app:layout_constraintTop_toTopOf="@+id/ticketBackGroundShape"
+                app:layout_constraintVertical_bias="0.082" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

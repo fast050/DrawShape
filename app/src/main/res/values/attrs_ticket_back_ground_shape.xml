@@ -11,6 +11,9 @@
     <attr name="ticketDividerPercentage" format="integer"/>
     <attr name="ticketShapeHeight" format="float"/>
     <attr name="ticketDividerHeight" format="float"/>
+    <attr name="ticketBackgroundColor" format="color" />
+    <attr name="ticketDividerColor" format="color" />
+
 
 </declare-styleable>
 
