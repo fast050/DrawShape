@@ -14,16 +14,40 @@ class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(conte
     private var scaleFactor = 0f
     private var ticketShapeHeight = 166f
     private var ticketDividerHeight = 103f
-    private var ticketCornerShape : Int = 0
+    private var ticketCornerShape: Int = 0
 
     init {
         paint.color = Color.GRAY
+
         val typedArray: TypedArray = context.theme.obtainStyledAttributes(
             attrs, R.styleable.TicketBackGroundShape, 0, 0
         )
         try {
-            innerRadius = typedArray.getDimensionPixelSize(R.styleable.TicketBackGroundShape_ticketInternalRadius, 20).toFloat()
-            cornerRadius = typedArray.getDimensionPixelSize(R.styleable.TicketBackGroundShape_ticketCornerRadius, 10).toFloat()
+            innerRadius = typedArray.getDimensionPixelSize(
+                R.styleable.TicketBackGroundShape_ticketInternalRadius,
+                20
+            ).toFloat()
+            cornerRadius = typedArray.getDimensionPixelSize(
+                R.styleable.TicketBackGroundShape_ticketCornerRadius,
+                10
+            ).toFloat()
+
+            ticketCornerShape =
+                typedArray.getInteger(
+                    R.styleable.TicketBackGroundShape_ticketCornerShape,
+                    0)
+
+            ticketShapeHeight =
+                typedArray.getFloat(
+                    R.styleable.TicketBackGroundShape_ticketShapeHeight,
+                    200f
+                )
+
+            ticketDividerHeight=
+                typedArray.getFloat(
+                    R.styleable.TicketBackGroundShape_ticketDividerHeight,
+                    150f
+                )
 
         } finally {
             typedArray.recycle()
@@ -34,11 +58,11 @@ class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(conte
         super.onDraw(canvas)
 
         canvas?.let {
-
-          //drawTicketRoundCorner(canvas)
-            drawTicket(canvas)
+            when (ticketCornerShape) {
+                0 -> drawTicket(canvas)
+                1 -> drawTicketRoundCorner(canvas)
+            }
         }
-
 
     }
 
@@ -91,6 +115,7 @@ class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(conte
             color = Color.BLACK
             strokeWidth = 2f.Scale()
             style = Paint.Style.STROKE
+            paint.flags = Paint.ANTI_ALIAS_FLAG
             pathEffect = DashPathEffect(floatArrayOf(30f, 20f), 15f)
         }
 
@@ -119,7 +144,7 @@ class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(conte
 
             //arch in top right corner
             arcTo(
-                width - (radiosCorner* 2),
+                width - (radiosCorner * 2),
                 originY,
                 width,
                 originY + (radiosCorner * 2),
@@ -179,12 +204,12 @@ class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(conte
                 false
             )
 
-            lineTo( originX , (radiosCorner*2))
+            lineTo(originX, (radiosCorner * 2))
             arcTo(
                 originX,
                 originY,
-                originX +(radiosCorner*2),
-                originY + (radiosCorner*2),
+                originX + (radiosCorner * 2),
+                originY + (radiosCorner * 2),
                 180f,
                 90f,
                 false
@@ -210,7 +235,7 @@ class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(conte
         )
     }
 
-    fun Float.Scale(): Float {
+    private fun Float.Scale(): Float {
         val heightByDesign = ticketShapeHeight
         return height * this / heightByDesign
     }

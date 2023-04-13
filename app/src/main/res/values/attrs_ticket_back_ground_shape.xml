@@ -9,6 +9,8 @@
     <attr name="ticketCornerRadius" format="dimension"/>
     <attr name="ticketHeight" format="dimension"/>
     <attr name="ticketDividerPercentage" format="integer"/>
+    <attr name="ticketShapeHeight" format="float"/>
+    <attr name="ticketDividerHeight" format="float"/>
 
 </declare-styleable>
 
