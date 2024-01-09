@@ -1,6 +1,7 @@
 package com.example.customview
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
@@ -10,7 +11,7 @@ import kotlin.math.sqrt
  *  support both direction for language , arabic and english , RTL , LTR
  *
  */
-class RibbonWithText (context: Context?, attributeSet: AttributeSet?): View(context , attributeSet){
+class CustomRibbon (context: Context?, attributeSet: AttributeSet?): View(context , attributeSet){
 
     var widthOfScreen = 0f
     var heightOfScreen = 0f
@@ -24,7 +25,7 @@ class RibbonWithText (context: Context?, attributeSet: AttributeSet?): View(cont
         widthOfScreen = width.toFloat()
         heightOfScreen = height.toFloat()
 
-        val isRtl = layoutDirection == LAYOUT_DIRECTION_RTL // if true is support the RTL direction
+        val isRtl = layoutDirection == LAYOUT_DIRECTION_RTL
 
         //define the shape of background
         val path = Path().apply {
@@ -64,40 +65,34 @@ class RibbonWithText (context: Context?, attributeSet: AttributeSet?): View(cont
                 lineTo(widthOfScreen , originY)
             }
             else{
-                moveTo(originX ,originY)
-                lineTo(widthOfScreen , heightOfScreen)
+                moveTo(widthOfScreen /6 ,originY)
+                lineTo(widthOfScreen , heightOfScreen * 5 / 6 )
             }
 
             close()
         }
 
         val text = context.getString(R.string.popular_label)
-        val textWidth = textPaint.measureText(text)
+        val textWidth = textPaint.measureText(text).dp().px()
         // Calculate the horizontal offset to center the text
         // Adjust this calculation based on your specific requirements
         val hOffset = if (isRtl) {
-            (textPathLength() / 2)  - textWidth/2  // Adjust for RTL if needed
+            (textPathLength() / 2)  - textWidth  // Adjust for RTL if needed
         } else {
-            (textPathLength() / 2) - textWidth/2
+            (textPathLength() / 2) - textWidth*2/3
         }
 
         canvas.drawPath(path, paint)
         canvas.drawTextOnPath(context.getString(R.string.popular_label),textPath ,
-            hOffset ,
-            - (pathLengthVertical()/2 - getTextHeight(textPaint , text)/2) ,
+            hOffset.dp().px() ,
+            - 0f ,
             textPaint)
 
     }
 
-    // This method converts SP to pixel units, considering user's font size settings.
-    private fun spToPx(sp: Float): Float {
-        val scaledDensity = context.resources.displayMetrics.scaledDensity
-        return sp * scaledDensity
-    }
-
     private fun textRatio():Float {
         val lengthOfDiagonal = textPathLength()
-        return  lengthOfDiagonal /10
+        return  lengthOfDiagonal /(10.dp().px())
     }
 
     //to get the diagonal path length
@@ -122,14 +117,20 @@ class RibbonWithText (context: Context?, attributeSet: AttributeSet?): View(cont
         }
 
         val pathMeasure = PathMeasure(path, false)
-        return pathMeasure.length
+        return pathMeasure.length.dp().px()
     }
 
-    private fun getTextHeight(textPaint: Paint, text:String) :Float {
+    private fun getTextHeight(textPaint:Paint , text:String) :Float {
         val bounds = Rect()
         textPaint.getTextBounds(text, 0, text.length, bounds)
         return bounds.height().toFloat()
     }
 
+
+
+    fun Float.dp() : Float = this / Resources.getSystem().displayMetrics.density
+    fun Float.px() : Float = this * Resources.getSystem().displayMetrics.density
+    fun Int.dp() : Float = this / Resources.getSystem().displayMetrics.density
+    fun Int.px() : Float = this * Resources.getSystem().displayMetrics.density
 
 }
