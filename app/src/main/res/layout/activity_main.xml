@@ -46,6 +46,14 @@
                 app:layout_constraintTop_toTopOf="@+id/ticketBackGroundShape"
                 app:layout_constraintVertical_bias="0.082" />
 
+            <com.example.customview.CustomRibbon
+                android:id="@+id/customRibbon"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:ribbonText="@string/popular_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

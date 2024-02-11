@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">CustomView</string>
-    <string name="popular_label" translatable="false">popular</string>
+    <string name="popular_label">popular</string>
 </resources>

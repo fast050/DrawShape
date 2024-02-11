@@ -11,13 +11,30 @@ import kotlin.math.sqrt
  *  support both direction for language , arabic and english , RTL , LTR
  *
  */
-class CustomRibbon (context: Context?, attributeSet: AttributeSet?): View(context , attributeSet){
+class CustomRibbon (context: Context, attributeSet: AttributeSet?): View(context , attributeSet){
 
-    var widthOfScreen = 0f
-    var heightOfScreen = 0f
-    var originX = 0f
-    var originY = 0f
+    private var widthOfScreen = 0f
+    private var heightOfScreen = 0f
+    private var originX = 0f
+    private var originY = 0f
+    private var ribbonText = ""
+    private var backgroundColor = 0
 
+
+    init {
+
+        val attributeSet = context.theme.obtainStyledAttributes(
+            attributeSet, R.styleable.CustomRibbon , 0 , 0
+        )
+
+        try {
+            ribbonText = attributeSet.getString(R.styleable.CustomRibbon_ribbonText) ?: "Popular"
+            backgroundColor = attributeSet.getColor(R.styleable.CustomRibbon_backgroundColor , Color.parseColor("#FFD600"))
+        } finally {
+            attributeSet.recycle()
+        }
+
+    }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -28,7 +45,7 @@ class CustomRibbon (context: Context?, attributeSet: AttributeSet?): View(contex
         val isRtl = layoutDirection == LAYOUT_DIRECTION_RTL
 
         //define the shape of background
-        val path = Path().apply {
+        val backgroundShapePath = Path().apply {
 
             if (isRtl){
                 moveTo(widthOfScreen , originY)
@@ -46,8 +63,8 @@ class CustomRibbon (context: Context?, attributeSet: AttributeSet?): View(contex
         }
 
         //define the paint of the shape of the background
-        val paint = Paint().apply {
-            color = Color.parseColor("#FFD600")
+        val backgroundPaint = Paint().apply {
+            color = backgroundColor
             style = Paint.Style.FILL
         }
 
@@ -61,8 +78,8 @@ class CustomRibbon (context: Context?, attributeSet: AttributeSet?): View(contex
         //define the path of where the text should be draw
         val textPath = Path().apply {
             if(isRtl){
-                moveTo(originX , heightOfScreen)
-                lineTo(widthOfScreen , originY)
+                moveTo(originX , heightOfScreen * 5/6)
+                lineTo(widthOfScreen * 5/6 , originY)
             }
             else{
                 moveTo(widthOfScreen /6 ,originY)
@@ -72,20 +89,20 @@ class CustomRibbon (context: Context?, attributeSet: AttributeSet?): View(contex
             close()
         }
 
-        val text = context.getString(R.string.popular_label)
+        val text = ribbonText
         val textWidth = textPaint.measureText(text).dp().px()
         // Calculate the horizontal offset to center the text
         // Adjust this calculation based on your specific requirements
         val hOffset = if (isRtl) {
-            (textPathLength() / 2)  - textWidth  // Adjust for RTL if needed
+            (textPathLength() / 2) - textWidth  // Adjust for RTL if needed
         } else {
-            (textPathLength() / 2) - textWidth*2/3
+            (textPathLength() / 2) - textWidth * 2/3
         }
 
-        canvas.drawPath(path, paint)
-        canvas.drawTextOnPath(context.getString(R.string.popular_label),textPath ,
-            hOffset.dp().px() ,
-            - 0f ,
+        canvas.drawPath(backgroundShapePath, backgroundPaint)
+        canvas.drawTextOnPath(ribbonText,textPath ,
+            hOffset ,
+            0f ,
             textPaint)
 
     }
@@ -109,28 +126,10 @@ class CustomRibbon (context: Context?, attributeSet: AttributeSet?): View(contex
         return lengthOfDiagonal
     }
 
-    //to get length between the two line the shape (diagonal , the line vertical up diagonal)
-    private fun pathLengthVertical() :Float {
-        val path = Path().apply {
-            moveTo(widthOfScreen , originY)
-            lineTo(widthOfScreen / 2 , originY)
-        }
 
-        val pathMeasure = PathMeasure(path, false)
-        return pathMeasure.length.dp().px()
-    }
-
-    private fun getTextHeight(textPaint:Paint , text:String) :Float {
-        val bounds = Rect()
-        textPaint.getTextBounds(text, 0, text.length, bounds)
-        return bounds.height().toFloat()
-    }
-
-
-
-    fun Float.dp() : Float = this / Resources.getSystem().displayMetrics.density
-    fun Float.px() : Float = this * Resources.getSystem().displayMetrics.density
-    fun Int.dp() : Float = this / Resources.getSystem().displayMetrics.density
+    private fun Float.dp() : Float = this / Resources.getSystem().displayMetrics.density
+    private fun Float.px() : Float = this * Resources.getSystem().displayMetrics.density
+    private fun Int.dp() : Float = this / Resources.getSystem().displayMetrics.density
     fun Int.px() : Float = this * Resources.getSystem().displayMetrics.density
 
 }
