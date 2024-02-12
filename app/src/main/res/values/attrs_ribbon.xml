@@ -3,5 +3,6 @@
     <declare-styleable name="CustomRibbon">
         <attr name="backgroundColor" format="color"/>
         <attr name="ribbonText" format="string"/>
+        <attr name="ribbonTextSize" format="dimension"/>
     </declare-styleable>
 </resources>

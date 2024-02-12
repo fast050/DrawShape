@@ -19,6 +19,8 @@ class CustomRibbon (context: Context, attributeSet: AttributeSet?): View(context
     private var originY = 0f
     private var ribbonText = ""
     private var backgroundColor = 0
+    private var ribbonTextSize = 0f
+
 
 
     init {
@@ -28,8 +30,9 @@ class CustomRibbon (context: Context, attributeSet: AttributeSet?): View(context
         )
 
         try {
-            ribbonText = attributeSet.getString(R.styleable.CustomRibbon_ribbonText) ?: "Popular"
+            ribbonText = attributeSet.getString(R.styleable.CustomRibbon_ribbonText) ?: ""
             backgroundColor = attributeSet.getColor(R.styleable.CustomRibbon_backgroundColor , Color.parseColor("#FFD600"))
+            ribbonTextSize = attributeSet.getDimension(R.styleable.CustomRibbon_ribbonTextSize , 0f)
         } finally {
             attributeSet.recycle()
         }
@@ -89,19 +92,14 @@ class CustomRibbon (context: Context, attributeSet: AttributeSet?): View(context
             close()
         }
 
-        val text = ribbonText
-        val textWidth = textPaint.measureText(text).dp().px()
-        // Calculate the horizontal offset to center the text
-        // Adjust this calculation based on your specific requirements
-        val hOffset = if (isRtl) {
-            (textPathLength() / 2) - textWidth  // Adjust for RTL if needed
-        } else {
-            (textPathLength() / 2) - textWidth * 2/3
-        }
+        val textWidth = textPaint.measureText(ribbonText)
+
+        // Calculate the horizontal offset to center the text to draw the text in middle of the path
+        val hOffset = (textPathLength() - textWidth) / 2
 
         canvas.drawPath(backgroundShapePath, backgroundPaint)
         canvas.drawTextOnPath(ribbonText,textPath ,
-            hOffset ,
+            hOffset.dp().px(),
             0f ,
             textPaint)
 
@@ -112,16 +110,18 @@ class CustomRibbon (context: Context, attributeSet: AttributeSet?): View(context
         return  lengthOfDiagonal /(10.dp().px())
     }
 
-    //to get the diagonal path length
+    //to get the length of the diagonal text path
     private fun textPathLength(): Float {
+        val widthOfTriangle = widthOfScreen - (widthOfScreen/6)
+        val heightOfTriangle = heightOfScreen - (heightOfScreen/6)
         val lengthOfDiagonal =
             //square
-            if (widthOfScreen == heightOfScreen) {
-                (widthOfScreen * sqrt(2.0)).toFloat()
+            if (widthOfTriangle == heightOfTriangle) {
+                (widthOfTriangle * sqrt(2.0)).toFloat()
             }
             //rectangle
             else {
-                sqrt((widthOfScreen * widthOfScreen) + (heightOfScreen * heightOfScreen))
+                sqrt((widthOfTriangle * widthOfTriangle) + (heightOfTriangle * heightOfTriangle))
             }
         return lengthOfDiagonal
     }
@@ -130,6 +130,4 @@ class CustomRibbon (context: Context, attributeSet: AttributeSet?): View(context
     private fun Float.dp() : Float = this / Resources.getSystem().displayMetrics.density
     private fun Float.px() : Float = this * Resources.getSystem().displayMetrics.density
     private fun Int.dp() : Float = this / Resources.getSystem().displayMetrics.density
-    fun Int.px() : Float = this * Resources.getSystem().displayMetrics.density
-
 }
