@@ -75,7 +75,7 @@ class CustomRibbon (context: Context, attributeSet: AttributeSet?): View(context
             color = Color.BLACK
             style = Paint.Style.FILL
             typeface = Typeface.DEFAULT_BOLD
-            textSize = textRatio()
+            textSize = if (ribbonTextSize == 0f) textRatio() else ribbonTextSize
         }
 
         //define the path of where the text should be draw
@@ -107,7 +107,7 @@ class CustomRibbon (context: Context, attributeSet: AttributeSet?): View(context
 
     private fun textRatio():Float {
         val lengthOfDiagonal = textPathLength()
-        return  lengthOfDiagonal /(10.dp().px())
+        return  lengthOfDiagonal /(8.dp().px())
     }
 
     //to get the length of the diagonal text path
