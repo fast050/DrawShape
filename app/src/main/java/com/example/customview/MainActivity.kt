@@ -10,11 +10,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
       val shapeChanger =  findViewById<ShapeChanger>(R.id.shapeChanger)
+      val textCustomView = findViewById<TextCustomView>(R.id.textCustomView)
         findViewById<EditText>(R.id.editTextNumbers).apply{
             addTextChangedListener {
+                textCustomView.setText(it.toString()/* , dpToPx(50f)*/ )
                 it?.toString()?.toIntOrNull()?.let {sides->
                     shapeChanger.setSides(sides)
-                    this.text = null
+
+                    if(this.text.length >3)
+                        this.text = null
+                    //textCustomView.setText(sides.toString())
                 }
             }
         }

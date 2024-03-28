@@ -69,12 +69,20 @@
                 android:id="@+id/editTextNumbers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:ems="10"
                 android:inputType="number"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/shapeChanger" />
+
+            <com.example.customview.TextCustomView
+                android:id="@+id/textCustomView"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="12dp"
+                app:layout_constraintBottom_toTopOf="@+id/shapeChanger"
+                app:layout_constraintEnd_toEndOf="@+id/shapeChanger"
+                app:layout_constraintStart_toStartOf="@+id/shapeChanger" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
