@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.Rect
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
@@ -17,7 +18,7 @@ class CouponsView(context: Context?, attrs: AttributeSet?) : View(context, attrs
     private var rightCoupons: Float = 0f
     private var totalCoupons = 0
     private var usedCoupons = 0
-    private val couponsShapePath = Path()
+    private var couponsShapePath = Path()
     private val couponsPaint = Paint()
     private var linePosition = 0f
     private var couponsPaintText = Paint()
@@ -48,7 +49,7 @@ class CouponsView(context: Context?, attrs: AttributeSet?) : View(context, attrs
         super.onSizeChanged(w, h, oldw, oldh)
 
         totalCoupons = 10
-        createCouponsContainerPath(width.toFloat())
+        couponsShapePath = createCouponsContainerPath(width.toFloat())
 
     }
 
@@ -63,12 +64,13 @@ class CouponsView(context: Context?, attrs: AttributeSet?) : View(context, attrs
 
     private fun createCouponsContainerPath(screenWidth: Float): Path {
 
-        topCoupons = height / 4f
-        leftCoupons = dpToPx(CELL_MIN_PADDING_DP)
-        rightCoupons = screenWidth - dpToPx(CELL_MIN_PADDING_DP)
-        bottomCoupons = height * 3 / 4f
+        topCoupons = LINE_SIZE_DP
+        leftCoupons = LINE_SIZE_DP
+        rightCoupons = screenWidth - LINE_SIZE_DP
+        bottomCoupons = height - LINE_SIZE_DP
 
-        couponsShapePath.addRoundRect(
+        val couponsPath = Path()
+        couponsPath.addRoundRect(
             RectF(
                 leftCoupons,
                 topCoupons,
@@ -83,7 +85,7 @@ class CouponsView(context: Context?, attrs: AttributeSet?) : View(context, attrs
             ), Path.Direction.CW
         )
 
-        return couponsShapePath
+        return couponsPath
     }
 
     private fun drawLinesOfCoupons(canvas: Canvas, screenWidth: Float) {
@@ -94,18 +96,24 @@ class CouponsView(context: Context?, attrs: AttributeSet?) : View(context, attrs
     }
 
     private fun drawTextInsideCoupons(canvas: Canvas, screenWidth: Float) {
+        val wordBound = Rect()
         val y = (topCoupons + bottomCoupons) / 2 -
                 (couponsPaintText.descent() + couponsPaintText.ascent()) / 2
+
         for (i in 1 until totalCoupons * 2) {
             if (i % 2 != 0) {
-                val x = screenWidth * i / (totalCoupons * 2).toFloat() - dpToPx(LINE_SIZE_DP) * 2
                 val number = i / 2 + 1
+                val numberText = number.toString()
+                couponsPaintText.getTextBounds(numberText , 0 , numberText.length , wordBound)
+                val x = screenWidth * i / (totalCoupons * 2).toFloat() -
+                        ((wordBound.right + wordBound.left)/2)
+
                 if (number <= usedCoupons) {
                     couponsPaintText.color = Color.GRAY
-                    canvas.drawText("$number", x, y, couponsPaintText)
+                    canvas.drawText(numberText, x, y, couponsPaintText)
                 } else {
                     couponsPaintText.color = Color.BLACK
-                    canvas.drawText("$number", x, y, couponsPaintText)
+                    canvas.drawText(numberText, x, y, couponsPaintText)
                 }
 
             }
