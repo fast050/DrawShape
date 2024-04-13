@@ -5,6 +5,7 @@ import android.content.res.TypedArray
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import kotlin.math.min
 
 
 class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(context, attrs) {
@@ -268,6 +269,29 @@ class TicketBackGroundShape(context: Context, attrs: AttributeSet?) : View(conte
         }
 
         canvas.drawPath(path, paint)
+    }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val desireWidth = MeasureSpec.getSize(widthMeasureSpec)
+        val desireHeight = MeasureSpec.getSize(heightMeasureSpec)
+        val widthMode = MeasureSpec.getMode(widthMeasureSpec)
+        val heightMode = MeasureSpec.getMode(heightMeasureSpec)
+        
+        val width = when(widthMode){
+            MeasureSpec.EXACTLY -> desireWidth
+            MeasureSpec.AT_MOST -> min(desireWidth , 500)
+            else -> 500
+            
+        }
+
+        val height = when(heightMode){
+            MeasureSpec.EXACTLY -> desireHeight
+            MeasureSpec.AT_MOST -> min(desireHeight , 1000)
+            else -> 1000
+
+        }
+        
+        setMeasuredDimension(width , height)
     }
 
 
