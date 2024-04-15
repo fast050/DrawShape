@@ -76,6 +76,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/shapeChanger" />
 
+            <com.example.customview.stateProgress.StateProgress
+                android:id="@+id/stateProgress"
+                android:layout_width="260dp"
+                android:layout_height="163dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextNumbers" />
+
             <com.example.customview.TextCustomView
                 android:id="@+id/textCustomView"
                 android:layout_width="0dp"
