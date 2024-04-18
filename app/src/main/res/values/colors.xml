@@ -10,4 +10,8 @@
 
     <color name="gray_light">#BEBEBE</color>
     <color name="primary_variant">#0378C2</color>
+    <color name="gray_dark">#272525</color>
+    <color name="green">#18BE31</color>
+    <color name="semi_transparent">#55FFFFFF</color>
+
 </resources>

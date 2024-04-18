@@ -55,57 +55,43 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.example.customview.ShapeChanger
-                android:id="@+id/shapeChanger"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+            <com.example.customview.matrix.ArrowShapeView
+                android:id="@+id/arrowShapeView"
+                android:layout_width="277dp"
+                android:layout_height="186dp"
+                android:layout_marginTop="52dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/customRibbon"
-                app:layout_constraintVertical_bias="0.29" />
-
-            <EditText
-                android:id="@+id/editTextNumbers"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="number"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/shapeChanger" />
-
-            <com.example.customview.stateProgress.StateProgress
-                android:id="@+id/stateProgress"
-                android:layout_width="260dp"
-                android:layout_height="163dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextNumbers" />
-
-            <com.example.customview.TextCustomView
-                android:id="@+id/textCustomView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
-                app:layout_constraintBottom_toTopOf="@+id/shapeChanger"
-                app:layout_constraintEnd_toEndOf="@+id/shapeChanger"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/shapeChanger"
-                app:layout_constraintTop_toBottomOf="@+id/couponsView"
-                app:layout_constraintVertical_bias="0.818" />
-
-            <com.example.customview.CouponsView
-                android:id="@+id/couponsView"
-                android:layout_width="322dp"
-                android:layout_height="47dp"
-                android:layout_marginTop="12dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.494"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/customRibbon" />
+
+            <com.example.customview.matrix.ProgressSlider
+                android:id="@+id/progressSliderX"
+                android:layout_width="299dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/arrowShapeView" />
+
+            <com.example.customview.matrix.ProgressSlider
+                android:id="@+id/progressSliderY"
+                android:layout_width="299dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/progressSliderRotate" />
+
+            <com.example.customview.matrix.ProgressSlider
+                android:id="@+id/progressSliderRotate"
+                android:layout_width="299dp"
+                android:layout_height="50dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="20dp"
+                app:layout_constraintHorizontal_bias="0.419"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/progressSliderX" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

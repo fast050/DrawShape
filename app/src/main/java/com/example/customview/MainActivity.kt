@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.lifecycleScope
+import com.example.customview.matrix.ArrowShapeView
+import com.example.customview.matrix.ProgressSlider
+import com.example.customview.matrix.SliderChangeListener
 import com.example.customview.stateProgress.State
 import com.example.customview.stateProgress.StateProgress
 import kotlinx.coroutines.Job
@@ -14,51 +16,32 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
-    private val states = listOf(
-        State("state 1"),
-        State("state 2"),
-        State("state 3 - longest name"),
-        State("state 4"),
-    )
-
-    private var stateChangeJob: Job? = null
-    private var currentStateIndex = -1
-    private lateinit var stateProgress : StateProgress
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-      val shapeChanger =  findViewById<ShapeChanger>(R.id.shapeChanger)
-      val textCustomView = findViewById<TextCustomView>(R.id.textCustomView)
-      stateProgress = findViewById(R.id.stateProgress)
-        findViewById<EditText>(R.id.editTextNumbers).apply{
-            addTextChangedListener {
-                textCustomView.setText(it.toString()/* , dpToPx(50f)*/ )
-                it?.toString()?.toIntOrNull()?.let {sides->
-                    shapeChanger.setSides(sides)
 
-                    if(this.text.length >3)
-                        this.text = null
-                    //textCustomView.setText(sides.toString())
-                }
+        val arrowShapeView :ArrowShapeView = findViewById(R.id.arrowShapeView)
+        val sliderX :ProgressSlider = findViewById(R.id.progressSliderX)
+        val sliderY :ProgressSlider = findViewById(R.id.progressSliderY)
+        val sliderRotate :ProgressSlider = findViewById(R.id.progressSliderRotate)
+
+
+        sliderX.sliderChangeListener = object :SliderChangeListener{
+            override fun onValueChanged(value: Float) {
+                arrowShapeView.startArrowX = value * arrowShapeView.width
             }
         }
-    }
 
-    override fun onStart() {
-        super.onStart()
-        stateChangeJob = lifecycleScope.launch {
-            delay(10)
-            stateProgress.bindStates(states)
-            while (isActive) {
-                stateProgress.bindCurrentState(states.getOrNull(currentStateIndex))
-                currentStateIndex = (currentStateIndex + 1) % (states.size + 1)
-                delay(1000)
+        sliderY.sliderChangeListener = object :SliderChangeListener{
+            override fun onValueChanged(value: Float) {
+                arrowShapeView.startArrowY = value * arrowShapeView.height
             }
         }
-    }
 
-    override fun onStop() {
-        super.onStop()
-        stateChangeJob?.cancel()
+        sliderRotate.sliderChangeListener = object :SliderChangeListener{
+            override fun onValueChanged(value: Float) {
+                arrowShapeView.rotationOfShape = value * 360
+            }
+        }
     }
 }

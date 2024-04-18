@@ -17,6 +17,7 @@ class ArrowShapeView(context: Context?, attributeSet: AttributeSet) : View(conte
     private val arrowPath = Path()
     private val referenceArrowPath = Path()
     private val arrowPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val textPaint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val transformationMatrix = Matrix()
     var startArrowX = 0f
         set(value) {
@@ -42,6 +43,13 @@ class ArrowShapeView(context: Context?, attributeSet: AttributeSet) : View(conte
             strokeWidth = dpToPx(ARROW_STROKE_SIZE)
             strokeJoin = Paint.Join.ROUND
         }
+
+        textPaint.apply {
+            color = Color.BLACK
+            style = Paint.Style.FILL
+            textSize = dpToPx(ARROW_STROKE_SIZE)
+            isAntiAlias = true
+        }
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -56,13 +64,20 @@ class ArrowShapeView(context: Context?, attributeSet: AttributeSet) : View(conte
         arrowPath.reset()
         arrowPath.set(referenceArrowPath)
 
+        canvas?.drawText(
+            "This just for testing" ,
+            startArrowPathPointX - dpToPx(20f) ,
+            startArrowPathPointY - dpToPx(20f) ,
+            textPaint)
+
         transformationMatrix.reset()
-        transformationMatrix.postTranslate(startArrowX, startArrowY)
         transformationMatrix.postRotate(
-            rotationOfShape,
-            startArrowPathPointX + startArrowX,
-            startArrowPathPointY + startArrowY
+                rotationOfShape,
+        startArrowPathPointX ,
+        startArrowPathPointY
         )
+        transformationMatrix.postTranslate(startArrowX, startArrowY)
+
         arrowPath.transform(transformationMatrix)
 
         canvas?.drawPath(arrowPath, arrowPaint)
