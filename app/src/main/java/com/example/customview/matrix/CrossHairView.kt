@@ -3,14 +3,19 @@ package com.example.customview.matrix
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.os.Parcel
+import android.os.Parcelable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.withSave
 import com.example.customview.R
 import com.example.customview.dpToPx
 import com.example.customview.matrix.MotionEventExtensions.distanceTo
 
+private const val TAG = "CrossHairView"
 class CrossHairView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -26,6 +31,10 @@ class CrossHairView(context: Context, attrs: AttributeSet?) : View(context, attr
     private var isDragged = false
     private var lastMotionPositionX = 0f
     private var lastMotionPositionY = 0f
+
+    private var crossHairXFraction = 0.5f
+    private var crossHairYFraction = 0.5f
+
 
     init {
         crossHairCircleRadius = dpToPx(CROSSHAIR_CIRCLE_RADIUS_DP)
@@ -54,6 +63,9 @@ class CrossHairView(context: Context, attrs: AttributeSet?) : View(context, attr
             centerCrossHairX += dx
             centerCrossHairY += dy
 
+            crossHairXFraction = centerCrossHairX / width
+            crossHairYFraction = centerCrossHairY / height
+
             lastMotionPositionX = event.x
             lastMotionPositionY = event.y
 
@@ -69,8 +81,8 @@ class CrossHairView(context: Context, attrs: AttributeSet?) : View(context, attr
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
 
-        centerCrossHairX = width / 2f
-        centerCrossHairY = height / 2f
+        centerCrossHairX = width * crossHairXFraction
+        centerCrossHairY = height * crossHairYFraction
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -81,41 +93,44 @@ class CrossHairView(context: Context, attrs: AttributeSet?) : View(context, attr
     }
 
     private fun drawCrossHairAngleLine(canvas: Canvas) {
-        canvas.rotate(-45f, centerCrossHairX, centerCrossHairY)
-        canvas.drawLine(
-            centerCrossHairX + crossHairCircleRadius - crossHairHairLength / 2,
-            centerCrossHairY,
-            centerCrossHairX + crossHairCircleRadius + crossHairHairLength / 2,
-            centerCrossHairY,
-            paint
-        )
+        canvas.withSave{
+            canvas.rotate(-45f, centerCrossHairX, centerCrossHairY)
+            canvas.drawLine(
+                centerCrossHairX + crossHairCircleRadius - crossHairHairLength / 2,
+                centerCrossHairY,
+                centerCrossHairX + crossHairCircleRadius + crossHairHairLength / 2,
+                centerCrossHairY,
+                paint
+            )
 
-        canvas.rotate(-90f, centerCrossHairX, centerCrossHairY)
-        canvas.drawLine(
-            centerCrossHairX + crossHairCircleRadius - crossHairHairLength / 2,
-            centerCrossHairY,
-            centerCrossHairX + crossHairCircleRadius + crossHairHairLength / 2,
-            centerCrossHairY,
-            paint
-        )
+            canvas.rotate(-90f, centerCrossHairX, centerCrossHairY)
+            canvas.drawLine(
+                centerCrossHairX + crossHairCircleRadius - crossHairHairLength / 2,
+                centerCrossHairY,
+                centerCrossHairX + crossHairCircleRadius + crossHairHairLength / 2,
+                centerCrossHairY,
+                paint
+            )
 
-        canvas.rotate(-90f, centerCrossHairX, centerCrossHairY)
-        canvas.drawLine(
-            centerCrossHairX + crossHairCircleRadius - crossHairHairLength / 2,
-            centerCrossHairY,
-            centerCrossHairX + crossHairCircleRadius + crossHairHairLength / 2,
-            centerCrossHairY,
-            paint
-        )
+            canvas.rotate(-90f, centerCrossHairX, centerCrossHairY)
+            canvas.drawLine(
+                centerCrossHairX + crossHairCircleRadius - crossHairHairLength / 2,
+                centerCrossHairY,
+                centerCrossHairX + crossHairCircleRadius + crossHairHairLength / 2,
+                centerCrossHairY,
+                paint
+            )
 
-        canvas.rotate(-90f, centerCrossHairX, centerCrossHairY)
-        canvas.drawLine(
-            centerCrossHairX + crossHairCircleRadius - crossHairHairLength / 2,
-            centerCrossHairY,
-            centerCrossHairX + crossHairCircleRadius + crossHairHairLength / 2,
-            centerCrossHairY,
-            paint
-        )
+            canvas.rotate(-90f, centerCrossHairX, centerCrossHairY)
+            canvas.drawLine(
+                centerCrossHairX + crossHairCircleRadius - crossHairHairLength / 2,
+                centerCrossHairY,
+                centerCrossHairX + crossHairCircleRadius + crossHairHairLength / 2,
+                centerCrossHairY,
+                paint
+            )
+        }
+
     }
 
     private fun drawCrossHairCircle(canvas: Canvas) {
@@ -130,11 +145,68 @@ class CrossHairView(context: Context, attrs: AttributeSet?) : View(context, attr
         canvas.drawCircle(centerCrossHairX, centerCrossHairY, crossHairDotRadius, paint)
     }
 
+    override fun onSaveInstanceState(): Parcelable {
+        val superSavedState = super.onSaveInstanceState()
+        return MySavedState(superSavedState, crossHairXFraction, crossHairYFraction)
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        Log.d(TAG, "onRestoreInstanceState: ")
+        if (state is MySavedState) {
+            super.onRestoreInstanceState(state.superSavedState)
+            crossHairXFraction = state.crosshairXFraction
+            crossHairYFraction = state.crosshairYFraction
+
+        } else {
+            super.onRestoreInstanceState(state)
+        }
+    }
+
     companion object {
         private const val CROSSHAIR_CIRCLE_RADIUS_DP = 40f
         private const val CROSSHAIR_DOT_RADIUS_DP = 4f
         private const val CROSSHAIR_HAIR_LENGTH_DP = 20f
         private const val CROSSHAIR_LINE_SIZE_DP = 2f
+    }
+
+    private class MySavedState: BaseSavedState {
+
+        val superSavedState: Parcelable?
+        val crosshairXFraction: Float
+        val crosshairYFraction: Float
+
+        constructor(
+            superSavedState: Parcelable?,
+            crosshairXFraction: Float,
+            crosshairYFraction: Float,
+        ): super(superSavedState) {
+            this.superSavedState = superSavedState
+            this.crosshairXFraction = crosshairXFraction
+            this.crosshairYFraction = crosshairYFraction
+        }
+
+        constructor(parcel: Parcel) : super(parcel) {
+            this.superSavedState = parcel.readParcelable(null)
+            this.crosshairXFraction = parcel.readFloat()
+            this.crosshairYFraction = parcel.readFloat()
+        }
+
+        override fun writeToParcel(out: Parcel, flags: Int) {
+            super.writeToParcel(out, flags)
+            out.writeParcelable(superSavedState, flags)
+            out.writeFloat(crosshairXFraction)
+            out.writeFloat(crosshairYFraction)
+        }
+
+        companion object CREATOR : Parcelable.Creator<MySavedState> {
+            override fun createFromParcel(parcel: Parcel): MySavedState {
+                return MySavedState(parcel)
+            }
+
+            override fun newArray(size: Int): Array<MySavedState?> {
+                return arrayOfNulls(size)
+            }
+        }
     }
 
 }
