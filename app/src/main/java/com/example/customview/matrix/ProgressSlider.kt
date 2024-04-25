@@ -8,8 +8,8 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.example.customview.R
-import com.example.customview.dpToPx
-import com.example.customview.matrix.MotionEventExtensions.distanceTo
+import com.example.customview.util.dpToPx
+import com.example.customview.util.MotionEventExtensions.distanceTo
 import kotlin.math.max
 import kotlin.math.min
 

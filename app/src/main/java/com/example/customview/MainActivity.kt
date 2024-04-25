@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val arrowShapeView :ArrowShapeView = findViewById(R.id.arrowShapeView)
+       /* val arrowShapeView :ArrowShapeView = findViewById(R.id.arrowShapeView)
         val sliderX :ProgressSlider = findViewById(R.id.progressSliderX)
         val sliderY :ProgressSlider = findViewById(R.id.progressSliderY)
         val sliderRotate :ProgressSlider = findViewById(R.id.progressSliderRotate)
@@ -42,6 +42,6 @@ class MainActivity : AppCompatActivity() {
             override fun onValueChanged(value: Float) {
                 arrowShapeView.rotationOfShape = value * 360
             }
-        }
+        }*/
     }
 }

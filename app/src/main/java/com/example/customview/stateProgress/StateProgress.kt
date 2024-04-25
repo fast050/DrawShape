@@ -8,7 +8,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.example.customview.R
-import com.example.customview.dpToPx
+import com.example.customview.util.dpToPx
 import kotlin.math.min
 
 class StateProgress(context: Context, attributeSet: AttributeSet?) : View(context, attributeSet) {

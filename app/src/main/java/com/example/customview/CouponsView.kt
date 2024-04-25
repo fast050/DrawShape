@@ -9,6 +9,7 @@ import android.graphics.Rect
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
+import com.example.customview.util.dpToPx
 
 class CouponsView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 

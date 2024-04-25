@@ -12,8 +12,8 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.withSave
 import com.example.customview.R
-import com.example.customview.dpToPx
-import com.example.customview.matrix.MotionEventExtensions.distanceTo
+import com.example.customview.util.dpToPx
+import com.example.customview.util.MotionEventExtensions.distanceTo
 
 private const val TAG = "CrossHairView"
 class CrossHairView(context: Context, attrs: AttributeSet?) : View(context, attrs) {

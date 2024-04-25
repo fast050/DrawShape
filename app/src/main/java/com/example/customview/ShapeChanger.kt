@@ -1,6 +1,5 @@
 package com.example.customview
 
-import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
@@ -9,10 +8,9 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PathMeasure
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
-import android.view.animation.LinearInterpolator
 import androidx.core.animation.doOnEnd
+import com.example.customview.util.dpToPx
 import kotlin.math.cos
 import kotlin.math.sin
 

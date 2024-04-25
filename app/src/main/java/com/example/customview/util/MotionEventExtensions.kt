@@ -1,4 +1,4 @@
-package com.example.customview.matrix
+package com.example.customview.util
 
 import android.view.MotionEvent
 import kotlin.math.sqrt

@@ -8,7 +8,7 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
 import android.view.View
-import com.example.customview.dpToPx
+import com.example.customview.util.dpToPx
 
 class ArrowShapeView(context: Context?, attributeSet: AttributeSet) : View(context, attributeSet) {
 
